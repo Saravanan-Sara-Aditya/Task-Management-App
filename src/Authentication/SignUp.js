@@ -77,7 +77,7 @@ const SignUp = () => {
   };
 
   return (
-    <Card className='shadow w-lg-50 mx-lg-auto m-3'>
+    <Card className='shadow w-lg-50 mt-lg-6 mx-lg-auto m-3'>
       <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card.Body>
         <h1 className='text-center'>Sign Up</h1>
