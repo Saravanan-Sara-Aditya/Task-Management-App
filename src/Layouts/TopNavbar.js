@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import  { auth } from '../Authentication/firebase'; 
-import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { auth } from '../Authentication/firebase'; 
+import { useHistory, Link } from 'react-router-dom';
 
-const MenuAppBar = () => {
+const TopNavBar = () => {
   const [currentUser, setCurrentUser] = useState(null); 
-  const history = useHistory()
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -18,32 +15,38 @@ const MenuAppBar = () => {
   }, []);
 
   const handleLogout = () => {
-    auth.signOut(); 
-    history.push("/");
+    auth.signOut()
+      .then(() => {
+        history.push("/");
+      })
+      .catch(error => {
+        console.error('Error occurred during logout:', error);
+      });
   };
 
   return (
-    <>
-      <Navbar className='gradient-bg' variant="dark" expand="lg">
-        <Container>      
-          <Navbar.Brand>TMA</Navbar.Brand>
+    <Navbar className='gradient-bg' variant="dark" expand="lg">
+      <Container>      
+        <Navbar.Brand>TMA</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
           <Nav>
             {currentUser ? ( 
-              <NavDropdown title={<FontAwesomeIcon icon={faUser} color='white' />}>
-                <NavDropdown.Item to="/Profile" as={Link}>Profile</NavDropdown.Item>
+              <NavDropdown id="profile-title" style={{color:"#fff"}} title={"Profile"}>
+
+                <NavDropdown.Item as={Link} to="/Profile">My Account</NavDropdown.Item>
                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <><Nav.Link className='text-white' to="/" as={Link}>Login</Nav.Link></>
+              <Nav.Link className='text-white' as={Link} to="/">Login</Nav.Link>
             )}
+              
           </Nav>
-          
-          {currentUser && <span className='d-none ms-md-2 d-md-block text-white'>{currentUser.displayName}</span>} 
-        </Container>
-      </Navbar>
-    </>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
-export default MenuAppBar;
+export default TopNavBar;

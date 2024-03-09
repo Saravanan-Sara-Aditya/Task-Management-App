@@ -34,7 +34,6 @@ const Login = () => {
       const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
       
-      // Store authentication data in local storage
       const authData = {
         uid: user.uid,
         email: user.email,

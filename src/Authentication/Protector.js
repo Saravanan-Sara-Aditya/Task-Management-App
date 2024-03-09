@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { auth } from '../Authentication/firebase';
 
-const ProtectorRoute = ({ component: Component, ...rest }) => {
+const Protector = ({ component: Component, ...rest }) => {
 
   const [user, setUser] = useState(null);
 
@@ -32,4 +32,4 @@ const ProtectorRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-export default ProtectorRoute;
+export default Protector;

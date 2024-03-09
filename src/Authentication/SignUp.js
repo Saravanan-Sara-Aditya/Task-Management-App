@@ -16,6 +16,7 @@ const SignUp = () => {
   const history = useHistory();
 
   const handleSignUp = async (e) => {
+
     e.preventDefault();
 
     let isValid = true;
@@ -23,13 +24,16 @@ const SignUp = () => {
     if (!name.trim()) {
       setNameError('Name is required');
       isValid = false;
-    } else if (name.length < 5) {
+    }
+    else if (name.length < 5) {
       setNameError('Name must be at least 5 characters long');
       isValid = false;
-    } else {
+    }
+    else {
       setNameError('');
     }
 
+   
     if (!email.trim()) {
       setEmailError('Email is required');
       isValid = false;
@@ -40,6 +44,7 @@ const SignUp = () => {
       setEmailError('');
     }
 
+    
     if (!password.trim()) {
       setPasswordError('Password is required');
       isValid = false;
@@ -60,20 +65,10 @@ const SignUp = () => {
         await user.updateProfile({ displayName: name });
         await user.sendEmailVerification();
         
-        // Store authentication data in local storage
-        const authData = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName
-        };
-        const existingAuthData = JSON.parse(localStorage.getItem('authData')) || [];
-        const updatedAuthData = [...existingAuthData, authData];
-        localStorage.setItem('authData', JSON.stringify(updatedAuthData));
-        
         toast.success('Sign up successful!');
        
         setTimeout(() => {
-          history.push('/login');
+          history.push("/");
         }, 1000); 
       } catch (error) {
         toast.error("Provide Valid Credentials");

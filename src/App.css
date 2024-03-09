@@ -14,3 +14,7 @@ body,
 html {
   overflow-x: hidden;
 }
+
+#profile-title{
+  color: #fff !important;
+}

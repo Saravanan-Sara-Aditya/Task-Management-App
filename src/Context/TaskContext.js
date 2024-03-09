@@ -1,37 +1,46 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { database } from '../Authentication/firebase'; 
+import { database } from '../Authentication/firebase'; // Assuming database is exported from firebase.js
 
 const TaskContext = createContext();
 
 export const useTaskContext = () => useContext(TaskContext);
 
-export const TaskProvider = ({ children, userId }) => {
-
-  const [tasks, setTasks] = useState([]);
+export const TaskProvider = ({ children }) => {
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
 
   useEffect(() => {
-    const tasksRef = database.ref(`users/${userId}/tasks`);
-    tasksRef.on('value', (snapshot) => {
-      const tasksData = snapshot.val();
-      if (tasksData) {
-        const tasksArray = Object.keys(tasksData).map((taskId) => ({
-          id: taskId,
-          ...tasksData[taskId],
-        }));
-        setTasks(tasksArray);
-      } else {
-        setTasks([]);
-      }
-    });
-
-   
-    return () => tasksRef.off('value');
-  }, [userId]);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (task) => {
-    const newTask = { id: Date.now().toString(), ...task }; 
-    const taskRef = database.ref(`users/${userId}/tasks`).push();
-    taskRef.set(newTask)
+    const newTask = { id: Date.now().toString(), ...task }; // Generate unique ID
+    setTasks([...tasks, newTask]);
+    addTaskToFirebase(newTask);
+  };
+
+  const updateTask = (taskId, updatedTask) => {
+    const updatedTasks = tasks.map(task => {
+      if (task.id === taskId) {
+        return { ...task, ...updatedTask };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    updateTaskInFirebase(taskId, updatedTask);
+  };
+
+  const deleteTask = (taskId) => {
+    const updatedTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(updatedTasks);
+    deleteTaskFromFirebase(taskId);
+  };
+
+  const addTaskToFirebase = (task) => {
+    const tasksRef = database.ref('tasks');
+    tasksRef.push(task)
       .then(() => {
         console.log('Task added to Realtime Database successfully');
       })
@@ -40,8 +49,8 @@ export const TaskProvider = ({ children, userId }) => {
       });
   };
 
-  const updateTask = (taskId, updatedTask) => {
-    const taskRef = database.ref(`users/${userId}/tasks/${taskId}`);
+  const updateTaskInFirebase = (taskId, updatedTask) => {
+    const taskRef = database.ref(`tasks/${taskId}`);
     taskRef.update(updatedTask)
       .then(() => {
         console.log('Task updated in Realtime Database successfully');
@@ -51,8 +60,8 @@ export const TaskProvider = ({ children, userId }) => {
       });
   };
 
-  const deleteTask = (taskId) => {
-    const taskRef = database.ref(`users/${userId}/tasks/${taskId}`);
+  const deleteTaskFromFirebase = (taskId) => {
+    const taskRef = database.ref(`tasks/${taskId}`);
     taskRef.remove()
       .then(() => {
         console.log('Task deleted from Realtime Database successfully');

@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 
-const ForgotPassword = () => {
+const ForgetPassword = () => {
 
   const [email, setEmail] = useState('');
   const history = useHistory();
@@ -19,7 +19,7 @@ const ForgotPassword = () => {
       toast.success('Password reset email sent successfully. Please check your email inbox.');
 
       setTimeout(() => {
-        history.push('/login');
+        history.push("/");
       }, 2000);
 
     } catch (error) {
@@ -59,4 +59,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgetPassword;
