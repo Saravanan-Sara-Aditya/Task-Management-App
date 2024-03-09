@@ -57,7 +57,7 @@ const Login = () => {
   };
 
   return (
-    <Card className='shadow w-lg-50 m-3 mx-lg-auto '>
+    <Card className='shadow w-lg-50 m-5 mt-lg-7 mx-lg-auto '>
       <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card.Body>
         <h1 className='text-center'>Login</h1>

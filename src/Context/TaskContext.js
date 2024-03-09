@@ -25,21 +25,18 @@ export const TaskProvider = ({ children, userId }) => {
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
     saveTasksToLocalStorage(updatedTasks);
-    toast.success('Task added successfully');
   };
 
   const deleteTask = (taskId) => {
     const updatedTasks = tasks.filter(task => task.id !== taskId);
     setTasks(updatedTasks);
     saveTasksToLocalStorage(updatedTasks);
-    toast.success('Task deleted successfully');
   };
 
   const updateTask = (taskId, updatedTask) => {
     const updatedTasks = tasks.map(task => (task.id === taskId ? { ...task, ...updatedTask } : task));
     setTasks(updatedTasks);
     saveTasksToLocalStorage(updatedTasks);
-    toast.success('Task updated successfully');
   };
 
   return (
