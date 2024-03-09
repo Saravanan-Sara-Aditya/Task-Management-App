@@ -25,7 +25,7 @@ const AddTaskForm = () => {
       toast.success('Task added successfully');
 
       setTimeout(() => {
-        history.push("/dashboard");
+        history.push("/");
       }, 1000);
     }
     setValidated(true);
@@ -33,7 +33,7 @@ const AddTaskForm = () => {
 
   return (
     <Container>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card className='m-md-5 ms-3 me-3 mb-3 mt-3'>
         <Card.Body>
           <h1>Create a New Task</h1>
@@ -98,7 +98,7 @@ const AddTaskForm = () => {
               Add Task
             </Button>
             {' '}
-              <Button as={Link} to="/dashboard" variant="danger">
+              <Button as={Link} to="/" variant="danger">
                 Cancel
               </Button>
           </Form>

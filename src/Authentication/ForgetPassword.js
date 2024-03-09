@@ -19,7 +19,7 @@ const ForgetPassword = () => {
       toast.success('Password reset email sent successfully. Please check your email inbox.');
 
       setTimeout(() => {
-        history.push("/");
+        history.push("/login");
       }, 2000);
 
     } catch (error) {
@@ -30,7 +30,7 @@ const ForgetPassword = () => {
   return (
     <Container>
       <Card className='shadow w-lg-50 mx-lg-auto m-3'>
-        <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+        <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
         <Card.Body>
           <h2>Forgot Password</h2>
           <Form onSubmit={handleResetPassword}>
@@ -48,7 +48,7 @@ const ForgetPassword = () => {
                 Reset Password
               </Button>
               {" "}
-              <Button variant="primary" as={Link} to="/">
+              <Button variant="primary" as={Link} to="/login">
                 Back
               </Button>
             </div>

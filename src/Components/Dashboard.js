@@ -47,7 +47,7 @@ const Dashboard = () => {
   return (
     <>
       <div className='m-md-5 ms-3 me-3 mb-3'>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
         <div className="row justify-content-end g-0">
           <h1 className="text-white">Dashboard</h1>
         </div>

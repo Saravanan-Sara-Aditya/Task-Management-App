@@ -36,7 +36,7 @@ const EditTaskForm = () => {
       updateTask(taskId, { taskName, description, priority, deadLine });
       toast.success('Task updated successfully');
       setTimeout(() => {
-        history.push("/dashboard");
+        history.push("/");
       }, 1000); 
     }
     setValidated(true);
@@ -44,7 +44,7 @@ const EditTaskForm = () => {
 
   return (
     <Container>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card className='m-md-5 mb-3'>
         <Card.Body>
           <h1>Edit Task</h1>
@@ -87,9 +87,9 @@ const EditTaskForm = () => {
                 isInvalid={validated && !priority.trim()}
               >
                 <option value="">Select</option>
-                <option value="neutral">Neutral</option>
-                <option value="low">Low</option>
-                <option value="high">High</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Low">Low</option>
+                <option value="High">High</option>
               </Form.Control>
               <Form.Control.Feedback type="invalid">Please select a priority.</Form.Control.Feedback>
             </Form.Group>
@@ -111,7 +111,7 @@ const EditTaskForm = () => {
               Update Task
             </Button>
             {" "}
-              <Button as={Link}  to="/dashboard" variant="danger">
+              <Button as={Link}  to="/" variant="danger">
                 Cancel
               </Button>
           </Form>

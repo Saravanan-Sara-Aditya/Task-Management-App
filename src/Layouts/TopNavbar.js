@@ -17,7 +17,7 @@ const TopNavBar = () => {
   const handleLogout = () => {
     auth.signOut()
       .then(() => {
-        history.push("/");
+        history.push("/login");
       })
       .catch(error => {
         console.error('Error occurred during logout:', error);
@@ -33,13 +33,14 @@ const TopNavBar = () => {
           <Nav className="me-auto"></Nav>
           <Nav>
             {currentUser ? ( 
-              <NavDropdown id="profile-title" style={{color:"#fff"}} title={"Profile"}>
+              <NavDropdown id="profile-title" style={{color:"#fff"}} title={currentUser.displayName}>
 
                 <NavDropdown.Item as={Link} to="/Profile">My Account</NavDropdown.Item>
                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Nav.Link className='text-white' as={Link} to="/">Login</Nav.Link>
+              <Nav.Link className='text-white' as={Link} to="/login">Login</Nav.Link>
+              
             )}
               
           </Nav>

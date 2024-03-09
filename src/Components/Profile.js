@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Container, Card, Button, Spinner } from 'react-bootstrap';
 import { auth } from '../Authentication/firebase';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -22,12 +22,12 @@ const Profile = () => {
             }
         });
 
-        return () => unsubscribe(); 
+        return () => unsubscribe();
     }, []);
 
     const handleLogout = () => {
         auth.signOut();
-        history.push("/");
+        history.push("/login");
     };
 
     return (
@@ -47,14 +47,18 @@ const Profile = () => {
                             </span>
                             <Button onClick={handleLogout} variant='danger'>Sign Out</Button>
                             {" "}
-                            <Link to="/dashboard">
+                            <Link to="/">
                                 <Button variant="primary">
                                     Back
                                 </Button>
                             </Link>
                         </>
                     ) : (
-                        <p>Loading...</p>
+                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                            <Spinner animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>
+                        </div>
                     )}
                 </Card.Body>
             </Card>

@@ -1,74 +1,45 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { database } from '../Authentication/firebase'; // Assuming database is exported from firebase.js
+import { toast } from 'react-toastify';
 
 const TaskContext = createContext();
 
 export const useTaskContext = () => useContext(TaskContext);
 
-export const TaskProvider = ({ children }) => {
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    return storedTasks ? JSON.parse(storedTasks) : [];
-  });
+export const TaskProvider = ({ children, userId }) => {
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
 
-  const addTask = (task) => {
-    const newTask = { id: Date.now().toString(), ...task }; // Generate unique ID
-    setTasks([...tasks, newTask]);
-    addTaskToFirebase(newTask);
+    const storedTasks = localStorage.getItem(`tasks_${userId}`);
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, [userId]);
+
+  const saveTasksToLocalStorage = (tasks) => {
+    localStorage.setItem(`tasks_${userId}`, JSON.stringify(tasks));
   };
 
-  const updateTask = (taskId, updatedTask) => {
-    const updatedTasks = tasks.map(task => {
-      if (task.id === taskId) {
-        return { ...task, ...updatedTask };
-      }
-      return task;
-    });
+  const addTask = (task) => {
+    const newTask = { id: Date.now().toString(), ...task }; 
+    const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
-    updateTaskInFirebase(taskId, updatedTask);
+    saveTasksToLocalStorage(updatedTasks);
+    toast.success('Task added successfully');
   };
 
   const deleteTask = (taskId) => {
     const updatedTasks = tasks.filter(task => task.id !== taskId);
     setTasks(updatedTasks);
-    deleteTaskFromFirebase(taskId);
+    saveTasksToLocalStorage(updatedTasks);
+    toast.success('Task deleted successfully');
   };
 
-  const addTaskToFirebase = (task) => {
-    const tasksRef = database.ref('tasks');
-    tasksRef.push(task)
-      .then(() => {
-        console.log('Task added to Realtime Database successfully');
-      })
-      .catch((error) => {
-        console.error('Error adding task to Realtime Database: ', error);
-      });
-  };
-
-  const updateTaskInFirebase = (taskId, updatedTask) => {
-    const taskRef = database.ref(`tasks/${taskId}`);
-    taskRef.update(updatedTask)
-      .then(() => {
-        console.log('Task updated in Realtime Database successfully');
-      })
-      .catch((error) => {
-        console.error('Error updating task in Realtime Database: ', error);
-      });
-  };
-
-  const deleteTaskFromFirebase = (taskId) => {
-    const taskRef = database.ref(`tasks/${taskId}`);
-    taskRef.remove()
-      .then(() => {
-        console.log('Task deleted from Realtime Database successfully');
-      })
-      .catch((error) => {
-        console.error('Error deleting task from Realtime Database: ', error);
-      });
+  const updateTask = (taskId, updatedTask) => {
+    const updatedTasks = tasks.map(task => (task.id === taskId ? { ...task, ...updatedTask } : task));
+    setTasks(updatedTasks);
+    saveTasksToLocalStorage(updatedTasks);
+    toast.success('Task updated successfully');
   };
 
   return (

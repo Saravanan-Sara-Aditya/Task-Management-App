@@ -68,7 +68,7 @@ const SignUp = () => {
         toast.success('Sign up successful!');
        
         setTimeout(() => {
-          history.push("/");
+          history.push("/login");
         }, 1000); 
       } catch (error) {
         toast.error("Provide Valid Credentials");
@@ -78,7 +78,7 @@ const SignUp = () => {
 
   return (
     <Card className='shadow w-lg-50 mx-lg-auto m-3'>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card.Body>
         <h1 className='text-center'>Sign Up</h1>
         <Form onSubmit={handleSignUp}>
@@ -124,7 +124,7 @@ const SignUp = () => {
           <Button variant="primary" className='mb-3' type="submit">
             Sign Up
           </Button>
-          <p className="text-center mb-0">Already an User? <Link to="/">Login</Link></p>
+          <p className="text-center mb-0">Already an User? <Link to="/login">Login</Link></p>
         </Form>
       </Card.Body>
     </Card>

@@ -44,7 +44,7 @@ const Login = () => {
       toast.success('Login successful!');
 
       setTimeout(() => {
-        history.push("/dashboard");
+        history.push("/");
       }, 1000);
     } catch (error) {
       toast.error("Invalid Credentials");
@@ -58,7 +58,7 @@ const Login = () => {
 
   return (
     <Card className='shadow w-lg-50 m-3 mx-lg-auto '>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
       <Card.Body>
         <h1 className='text-center'>Login</h1>
         <Form onSubmit={handleLogin}>
